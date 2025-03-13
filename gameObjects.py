@@ -24,8 +24,9 @@ class Player(parentClass):
 
 #creat target class
 class target(parentClass):
-    def __init__(self,positionx,positionx):
-        super().__init__(positionx,positionx)
+    def __init__(self,positionx,positiony):
+        super().__init__(positionx,positiony)
+        self.icon = 'icon/target.png'
 
 #creat bullet prize class
 class bulletPrize(parentClass):
@@ -36,4 +37,3 @@ class bulletPrize(parentClass):
 class timePrize(parentClass):
     def __init__(self,positionx,positiony):
         super().__init__(positionx,positiony)
-
