@@ -1,20 +1,26 @@
 #creat parent class
 class parentClass:
-    def __init__(self,positionx,positiony):
+    def __init__(self,positionx,positiony,icon):
         # self.position = (round(random.randrange(0, 800),-1), round(random.randrange(0, 600),-1))
-        self.position = (positionx,positiony)
+        self.positionx = positionx
+        self.positiony = positiony
+        self.icon = icon
 
 #creat plyer class
 class Player(parentClass):
-    def __init__(self,positionx,positiony):
-        super().__init__(positionx,positiony)
+    def __init__(self,positionx,positiony,icon):
+        super().__init__(positionx,positiony,icon)
         self.score = 0
-        self.timer = 0
+        self.timer = 60
+        self.shots = []
+        self.bullets = 10
     def move(self):
         pass
 
     def shoot(self):
-        pass
+        self.shots.append(self.position)
+        self.bullets -= 1
+        return self.position
 
     def set_score(self):
         pass
@@ -24,16 +30,15 @@ class Player(parentClass):
 
 #creat target class
 class target(parentClass):
-    def __init__(self,positionx,positiony):
-        super().__init__(positionx,positiony)
-        self.icon = 'icon/target.png'
+    def __init__(self,positionx,positiony,icon):
+        super().__init__(positionx,positiony,icon)
 
 #creat bullet prize class
 class bulletPrize(parentClass):
-    def __init__(self,positionx,positiony):
-        super().__init__(positionx,positiony)
+    def __init__(self,positionx,positiony,icon):
+        super().__init__(positionx,positiony,icon)
 
 #creat time prize class
 class timePrize(parentClass):
-    def __init__(self,positionx,positiony):
-        super().__init__(positionx,positiony)
+    def __init__(self,positionx,positiony,icon):
+        super().__init__(positionx,positiony,icon)
