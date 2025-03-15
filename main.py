@@ -66,7 +66,7 @@ while running:
                 if res[0]:
                     res[1].positionx = round(random.randrange(50, 800), -1)
                     res[1].positiony = round(random.randrange(50, 600), -1)
-                    player1.set_score()
+                    player1.set_score(player1.shots[len(player1.shots) - 2],player1.shots[len(player1.shots) - 1])
 
         #move player 2 and limit
         if event.type == pygame.KEYUP:
