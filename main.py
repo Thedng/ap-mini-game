@@ -3,6 +3,20 @@ import random
 import pygame
 import gameObjects
 
+#creating target objects
+target1 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
+target2 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
+target3 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
+
+#getting players name
+pn1 = input('enter name of first player')
+pn2 = input('enter name of second player')
+
+#creat player object
+player1 = gameObjects.Player(pn1,round(random.randrange(50, 750), -1), round(random.randrange(50, 550),-1), 'icon/blue-dot.png')
+player2 = gameObjects.Player(pn2,round(random.randrange(50, 750), -1), round(random.randrange(50, 550),-1), 'icon/red-dot.png')
+
+
 #intialize pygame
 pygame.init()
 
@@ -13,14 +27,6 @@ screen = pygame.display.set_mode((800, 700))
 pygame.display.set_caption("Mini Game")
 pygame.display.set_icon(pygame.image.load('icon/gun.png'))
 
-#creating game objects
-target1 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
-target2 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
-target3 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
-
-#creat player object
-player1 = gameObjects.Player(round(random.randrange(50, 750), -1), round(random.randrange(50, 550),-1), 'icon/blue-dot.png')
-player2 = gameObjects.Player(round(random.randrange(50, 750), -1), round(random.randrange(50, 550),-1), 'icon/red-dot.png')
 
 #display game objects
 def show_object(obj):
@@ -46,8 +52,8 @@ def is_hit(player):
 #show timer and scores
 font = pygame.font.Font('freesansbold.ttf', 18)
 
-def display_game_stats(player,timer,score,positionx,positiony):
-    game_stats = font.render(f'{player} - score : {score} - timer : {timer}', True, (0,0,0))
+def display_game_stats(player,timer,score,bullets,positionx,positiony):
+    game_stats = font.render(f'{player} - score : {score} - timer : {timer} - bullets: {bullets}', True, (0,0,0))
     screen.blit(game_stats, (positionx, positiony))
 
 #game loop
@@ -132,7 +138,7 @@ while running:
         show_shots(player1, (i[0],i[1]))
     for i in player2.shots[1:]:
         show_shots(player2, (i[0],i[1]))
-    display_game_stats('player1',player1.timer,player1.score,100,650)
-    display_game_stats('player2', player2.timer, player2.score, 450, 650)
+    display_game_stats(player1.name,player1.timer,player1.score,player1.bullets, 40,650)
+    display_game_stats(player2.name, player2.timer, player2.score, player2.bullets, 450, 650)
     pygame.display.update()
 

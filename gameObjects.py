@@ -25,8 +25,9 @@ class parentClass:
 
 #creat plyer class
 class Player(parentClass):
-    def __init__(self,positionx,positiony,icon):
+    def __init__(self,name,positionx,positiony,icon):
         super().__init__(positionx,positiony,icon)
+        self.name = name
         self.score = 0
         self.timer = 60
         self.shots = [[positionx,positiony]]
