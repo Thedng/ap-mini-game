@@ -45,7 +45,24 @@ def is_hit(player):
 
 #game loop
 running = True
+
+# Create a clock object to manage time
+clock = pygame.time.Clock()
+
+# Initialize the last tick
+last_tick = pygame.time.get_ticks()
+
 while running:
+    # Get the current time
+    current_tick = pygame.time.get_ticks()
+
+    # Check if one second has passed
+    if current_tick - last_tick >= 1000:
+        player1.timer -= 1
+        player2.timer -= 1
+        last_tick = current_tick
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -71,7 +88,6 @@ while running:
                     else:
                         player1.set_score(player1.shots[len(player1.shots) - 2],player1.shots[len(player1.shots) - 1])
                     player1.lastShot = True
-                    print(player1.score)
                 else:
                     player1.lastShot = False
             #move player 2 and limit
@@ -95,7 +111,6 @@ while running:
                     else:
                         player2.set_score(player2.shots[len(player2.shots) - 2], player2.shots[len(player2.shots) - 1])
                     player2.lastShot = True
-                    print(player2.score)
                 else:
                     player1.lastShot = False
 
