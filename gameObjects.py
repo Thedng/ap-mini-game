@@ -1,3 +1,4 @@
+import math
 #creat parent class
 class parentClass:
     def init(self,positionx,positiony,icon):
@@ -20,8 +21,17 @@ class Player(parentClass):
         self.bullets -= 1
 
     def set_score(self,p1,p2):
-         score = round(math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2),-1)
-         self.score =+ score
+        score = round(math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2),-1)
+        if score < 200 :
+            self.score += 1
+        elif score < 400 :
+            self.score += 2
+        elif score < 600 :
+            self.score += 3
+        elif score < 800 :
+            self.sore += 4
+        else:
+            self.score += 5
     def set_timer(self):
         pass
 
