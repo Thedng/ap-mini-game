@@ -29,9 +29,9 @@ class Player(parentClass):
         super().__init__(positionx,positiony,icon)
         self.name = name
         self.score = 0
-        self.timer = 60
+        self.timer = 120
         self.shots = [[positionx,positiony]]
-        self.bullets = 10
+        self.bullets = 25
         self.lastShot = False
 
     def shoot(self):
