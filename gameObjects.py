@@ -1,7 +1,8 @@
 import math
 import random
+from abc import ABC, abstractmethod
 #creat parent class
-class parentClass:
+class parentClass(ABC):
     def __init__(self,positionx,positiony,icon):
         self.positionx = positionx
         self.positiony = positiony

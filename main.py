@@ -83,7 +83,7 @@ clock = pygame.time.Clock()
 last_tick = pygame.time.get_ticks()
 
 while running:
-    if not ((player1.have_timer() and player2.have_timer()) or (player1.have_bullets() and player2.have_bullets())):
+    if (not player1.have_timer() and not player2.have_timer()) or (not player1.have_bullets() and not player2.have_bullets()):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -194,5 +194,5 @@ while running:
         display_game_stats(player1.name,player1.get_timer(),player1.get_score(),player1.get_bullets(), 40,650)
         display_game_stats(player2.name, player2.get_timer(), player2.get_score(), player2.get_bullets(), 450, 650)
         pygame.display.update()
-        if (player2.have_timer() and player1.have_timer()) or (player2.have_bullets() and player1.have_bullets()):
+        if (not player1.have_timer() and not player2.have_timer()) or (not player1.have_bullets() and not player2.have_bullets()):
             finish_sound.play()
