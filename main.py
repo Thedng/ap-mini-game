@@ -7,7 +7,7 @@ import gameObjects
 target1 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
 target2 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
 target3 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
-
+bonus_target = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/؟.png')
 #getting players name
 pn1 = input('enter name of first player')
 pn2 = input('enter name of second player')
@@ -47,6 +47,8 @@ def is_hit(player):
         return([True,target2])
     elif distance(player,target3) < 10:
         return([True,target3])
+    elif distance(player,bonus_target) < 13:
+        return([True,bonus_target])
     return([False,None])
 
 #show timer and scores
@@ -98,6 +100,8 @@ while running:
                     res[1].set_position()
                     if player1.lastShot:
                         player1.score_prize()
+                    elif res[1] == bonus_target :
+                        player1.set_bonus()
                     else:
                         player1.set_score(player1.shots[len(player1.shots) - 2],player1.shots[len(player1.shots) - 1])
                     player1.lastShot = True
@@ -121,6 +125,8 @@ while running:
                     res[1].set_position()
                     if player2.lastShot:
                         player2.score_prize()
+                    elif res[1] == bonus_target :
+                        player2.set_bonus()
                     else:
                         player2.set_score(player2.shots[len(player2.shots) - 2], player2.shots[len(player2.shots) - 1])
                     player2.lastShot = True
@@ -134,6 +140,7 @@ while running:
     show_object(target1)
     show_object(target2)
     show_object(target3)
+    show_object(bonus_target)
     for i in player1.shots[1:]:
         show_shots(player1, (i[0],i[1]))
     for i in player2.shots[1:]:
@@ -141,4 +148,3 @@ while running:
     display_game_stats(player1.name,player1.timer,player1.score,player1.bullets, 40,650)
     display_game_stats(player2.name, player2.timer, player2.score, player2.bullets, 450, 650)
     pygame.display.update()
-
