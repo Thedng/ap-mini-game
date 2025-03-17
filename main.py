@@ -47,7 +47,7 @@ def is_hit(player):
         return([True,target2])
     elif distance(player,target3) < 10:
         return([True,target3])
-    elif distance(player,bonus_target) < 20:
+    elif distance(player,bonus_target) < 10:
         return([True,bonus_target])
     return([False,None])
 
