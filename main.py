@@ -83,15 +83,15 @@ clock = pygame.time.Clock()
 last_tick = pygame.time.get_ticks()
 
 while running:
-    if (player2.timer <= 0 and player1.timer <= 0) or (player2.bullets <= 0 and player1.bullets <= 0):
+    if not ((player1.have_timer() and player2.have_timer()) or (player1.have_bullets() and player2.have_bullets())):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
         screen.fill((255,255,255))
         # finish_sound.play()
-        if player1.score > player2.score:
+        if player1.get_score() > player2.get_score():
             winner = player1
-        elif player1.score < player2.score:
+        elif player1.get_score() < player2.get_score():
             winner = player2
         else:
             winner = None
@@ -108,8 +108,8 @@ while running:
 
         # Check if one second has passed
         if current_tick - last_tick >= 1000:
-            player1.timer -= 1
-            player2.timer -= 1
+            player1.dec_timer()
+            player2.dec_timer()
             last_tick = current_tick
 
 
@@ -128,7 +128,7 @@ while running:
                     player1.move(False, True)
 
                 # player 1 shoot target
-                if event.key == pygame.K_SPACE and player1.bullets > 0 and player1.timer > 0:
+                if event.key == pygame.K_SPACE and player1.have_bullets() and player1.have_timer():
                     player1.shoot()
                     shooting_sound.play()
                     res = is_hit(player1)
@@ -159,7 +159,7 @@ while running:
                     player2.move(False, True)
 
                 # player 2 shoot target
-                if event.key == pygame.K_x and player2.bullets > 0 and player2.timer > 0:
+                if event.key == pygame.K_x and player2.have_bullets() and player2.have_timer():
                     player2.shoot()
                     shooting_sound.play()
                     res = is_hit(player2)
@@ -191,8 +191,8 @@ while running:
             show_shots(player1, (i[0],i[1]))
         for i in player2.shots[1:]:
             show_shots(player2, (i[0],i[1]))
-        display_game_stats(player1.name,player1.timer,player1.score,player1.bullets, 40,650)
-        display_game_stats(player2.name, player2.timer, player2.score, player2.bullets, 450, 650)
+        display_game_stats(player1.name,player1.get_timer(),player1.get_score(),player1.get_bullets(), 40,650)
+        display_game_stats(player2.name, player2.get_timer(), player2.get_score(), player2.get_bullets(), 450, 650)
         pygame.display.update()
-        if (player2.timer <= 0 and player1.timer <= 0) or (player2.bullets <= 0 and player1.bullets <= 0):
+        if (player2.have_timer() and player1.have_timer()) or (player2.have_bullets() and player1.have_bullets()):
             finish_sound.play()

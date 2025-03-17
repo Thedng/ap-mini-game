@@ -28,45 +28,60 @@ class Player(parentClass):
     def __init__(self,name,positionx,positiony,icon):
         super().__init__(positionx,positiony,icon)
         self.name = name
-        self.score = 0
-        self.timer = 120
+        self._score = 0
+        self._timer = 120
         self.shots = [[positionx,positiony]]
-        self.bullets = 25
+        self._bullets = 25
         self.lastShot = False
 
     def shoot(self):
         self.shots.append([self.positionx,self.positiony])
-        self.bullets -= 1
+        self._bullets -= 1
 
     def set_score(self,p1,p2):
         score = round(math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2),-1)
         if score < 30 :
-            self.score += 1
+            self._score += 1
         elif score < 60 :
-            self.score += 2
+            self._score += 2
         elif score < 80 :
-            self.score += 3
+            self._score += 3
         elif score < 100 :
-            self.sore += 4
+            self._score += 4
         else:
-            self.score += 5
+            self._score += 5
 
     def score_prize(self):
-        self.score += 10
+        self._score += 10
 
     def set_bonus(self):
         rand_num = random.randrange(1,5)
         if rand_num == 1 :
-            self.bullets += 3
+            self._bullets += 3
         elif rand_num == 2 :
-            self.bullets += 5
+            self._bullets += 5
         elif rand_num == 3 :
-            self.timer += 10
+            self._timer += 10
         else :
-            self.timer += 20
+            self._timer += 20
 
-    def set_timer(self):
-        pass
+    def dec_timer(self):
+        self._timer -= 1
+
+    def have_bullets(self):
+        return self._bullets > 0
+
+    def have_timer(self):
+        return self._timer > 0
+
+    def get_score(self):
+        return self._score
+
+    def get_timer(self):
+        return self._timer
+
+    def get_bullets(self):
+        return self._bullets
 
 #creat target class
 class target(parentClass):
