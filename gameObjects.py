@@ -54,6 +54,17 @@ class Player(parentClass):
     def score_prize(self):
         self.score += 10
 
+    def set_bonus(self):
+        rand_num = random.randrange(1,5)
+        if rand_num == 1 :
+            self.bullets += 3
+        elif rand_num == 2 :
+            self.bullets += 5
+        elif rand_num == 3 :
+            self.timer += 10
+        else :
+            self.timer += 20
+
     def set_timer(self):
         pass
 
