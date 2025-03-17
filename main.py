@@ -7,7 +7,7 @@ import gameObjects
 target1 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
 target2 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
 target3 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
-bonus_target = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/؟.png')
+bonus_target = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/question-mark.png')
 #getting players name
 pn1 = input('enter name of first player')
 pn2 = input('enter name of second player')
@@ -47,7 +47,7 @@ def is_hit(player):
         return([True,target2])
     elif distance(player,target3) < 10:
         return([True,target3])
-    elif distance(player,bonus_target) < 13:
+    elif distance(player,bonus_target) < 20:
         return([True,bonus_target])
     return([False,None])
 
@@ -91,12 +91,13 @@ while running:
                 player1.move(False,False)
             if event.key == pygame.K_DOWN and player1.positiony < 580:
                 player1.move(False, True)
-
+        
             #player 1 shoot target
             if event.key == pygame.K_SPACE  and player1.bullets > 0 and player1.timer > 0:
                 player1.shoot()
                 res = is_hit(player1)
                 if res[0]:
+
                     res[1].set_position()
                     if player1.lastShot:
                         player1.score_prize()
