@@ -9,8 +9,13 @@ target2 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.
 target3 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
 bonus_target = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/question-mark.png')
 #getting players name
-pn1 = input('enter name of first player')
-pn2 = input('enter name of second player')
+while True:
+    pn1 = input('enter name of first player: ')
+    pn2 = input('enter name of second player: ')
+    if pn1 != pn2:
+        break
+    else:
+        print('enter different names')
 
 #creat player object
 player1 = gameObjects.Player(pn1,round(random.randrange(50, 750), -1), round(random.randrange(50, 550),-1), 'icon/blue-dot.png')
@@ -68,6 +73,8 @@ clock = pygame.time.Clock()
 last_tick = pygame.time.get_ticks()
 
 while running:
+    if (player2.timer <= 0 and player1.timer <= 0) or (player2.bullets <= 0 and player1.bullets <= 0):
+        break
     # Get the current time
     current_tick = pygame.time.get_ticks()
 
@@ -92,22 +99,24 @@ while running:
             if event.key == pygame.K_DOWN and player1.positiony < 580:
                 player1.move(False, True)
         
-            #player 1 shoot target
-            if event.key == pygame.K_SPACE  and player1.bullets > 0 and player1.timer > 0:
+            # player 1 shoot target
+            if event.key == pygame.K_SPACE and player1.bullets > 0 and player1.timer > 0:
                 player1.shoot()
                 res = is_hit(player1)
-                if res[0]:
-
+                if res[0] and res[1] != bonus_target:
                     res[1].set_position()
                     if player1.lastShot:
                         player1.score_prize()
-                    elif res[1] == bonus_target :
-                        player1.set_bonus()
                     else:
-                        player1.set_score(player1.shots[len(player1.shots) - 2],player1.shots[len(player1.shots) - 1])
+                        player1.set_score(player1.shots[len(player1.shots) - 2], player1.shots[len(player1.shots) - 1])
                     player1.lastShot = True
+                elif res[0] and res[1] == bonus_target:
+                    player1.set_bonus()
+                    bonus_target.set_position()
+                    player1.lastShot = False
                 else:
                     player1.lastShot = False
+
             #move player 2 and limit
             if event.key == pygame.K_a and player2.positionx > 0:
                 player2.move(True, False)
@@ -122,17 +131,19 @@ while running:
             if event.key == pygame.K_x and player2.bullets > 0 and player2.timer > 0:
                 player2.shoot()
                 res = is_hit(player2)
-                if res[0]:
+                if res[0] and res[1] != bonus_target:
                     res[1].set_position()
                     if player2.lastShot:
                         player2.score_prize()
-                    elif res[1] == bonus_target :
-                        player2.set_bonus()
                     else:
                         player2.set_score(player2.shots[len(player2.shots) - 2], player2.shots[len(player2.shots) - 1])
                     player2.lastShot = True
+                elif res[0] and res[1] == bonus_target:
+                    player2.set_bonus()
+                    bonus_target.set_position()
+                    player2.lastShot = False
                 else:
-                    player1.lastShot = False
+                    player2.lastShot = False
 
     #set background color
     screen.fill((255, 255, 255))
@@ -149,3 +160,10 @@ while running:
     display_game_stats(player1.name,player1.timer,player1.score,player1.bullets, 40,650)
     display_game_stats(player2.name, player2.timer, player2.score, player2.bullets, 450, 650)
     pygame.display.update()
+
+if player1.score > player2.score:
+    print(f'{player1.name} wins')
+elif player1.score < player2.score:
+    print(f'{player2.name} wins')
+else:
+    print('tie')
