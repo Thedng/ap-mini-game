@@ -70,9 +70,12 @@ font = pygame.font.Font('freesansbold.ttf', 14)
 ending_font = pygame.font.Font('freesansbold.ttf', 50)
 
 def display_game_stats(player,timer,score,bullets,positionx,positiony):
-    game_stats = font.render(f'{player} - score : {score} - timer : {timer} - bullets: {bullets}', True, (0,0,0))
+    game_stats = font.render(f'{player} - score : {score} - timer : {timer} - bullets: {bullets}', True, (255,255,255))
     screen.blit(game_stats, (positionx, positiony))
 
+#bg image
+bg = pygame.image.load('icon/bg.png')
+bg = pygame.transform.scale(bg, (800, 600))
 #game loop
 running = True
 
@@ -87,7 +90,7 @@ while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        screen.fill((255,255,255))
+        screen.fill((0,0,0))
         # finish_sound.play()
         if player1.get_score() > player2.get_score():
             winner = player1
@@ -96,10 +99,10 @@ while running:
         else:
             winner = None
         if winner is not None:
-            ending = ending_font.render(f'{winner.name} won!!', True, (0,0,0))
+            ending = ending_font.render(f'{winner.name} won!!', True, (255,255,255))
             screen.blit(ending,(280,300))
         else:
-            ending = ending_font.render(f'tie!!', True, (0,0,0))
+            ending = ending_font.render(f'tie!!', True, (255,255,255))
             screen.blit(ending, (350, 300))
         pygame.display.update()
     else:
@@ -179,8 +182,9 @@ while running:
                     else:
                         player2.lastShot = False
 
-        #set background color
-        screen.fill((255, 255, 255))
+        #set background color & image
+        screen.fill((0, 0, 0))
+        screen.blit(bg, (0,0))
 
         #display objects
         show_object(target1)
