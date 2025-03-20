@@ -84,6 +84,9 @@ class Player(parentClass):
     def get_bullets(self):
         return self._bullets
 
+    def lose_timer(self):
+        self._timer -= 10
+
 #creat target class
 class target(parentClass):
     def __init__(self,positionx,positiony,icon):

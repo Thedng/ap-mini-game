@@ -9,6 +9,7 @@ target1 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.
 target2 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
 target3 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
 bonus_target = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/question-mark.png')
+sec_bonus_target = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/timer.png')
 #getting players name
 while True:
     pn1 = input('enter name of first player: ')
@@ -63,6 +64,8 @@ def is_hit(player):
         return([True,target3])
     elif distance(player,bonus_target) < 10:
         return([True,bonus_target])
+    elif distance(player,sec_bonus_target) < 10:
+        return([True,sec_bonus_target])
     return([False,None])
 
 #show timer and scores
@@ -135,7 +138,7 @@ while running:
                     player1.shoot()
                     shooting_sound.play()
                     res = is_hit(player1)
-                    if res[0] and res[1] != bonus_target:
+                    if res[0] and res[1] != bonus_target and res[1] != sec_bonus_target:
                         target_sound.play()
                         res[1].set_position()
                         if player1.lastShot:
@@ -147,6 +150,11 @@ while running:
                         rand_target_sound.play()
                         player1.set_bonus()
                         bonus_target.set_position()
+                        player1.lastShot = False
+                    elif res[0] and res[1] == sec_bonus_target:
+                        rand_target_sound.play()
+                        player2.lose_timer()
+                        sec_bonus_target.set_position()
                         player1.lastShot = False
                     else:
                         player1.lastShot = False
@@ -166,7 +174,7 @@ while running:
                     player2.shoot()
                     shooting_sound.play()
                     res = is_hit(player2)
-                    if res[0] and res[1] != bonus_target:
+                    if res[0] and res[1] != bonus_target and res[1] != sec_bonus_target:
                         target_sound.play()
                         res[1].set_position()
                         if player2.lastShot:
@@ -178,6 +186,11 @@ while running:
                         rand_target_sound.play()
                         player2.set_bonus()
                         bonus_target.set_position()
+                        player2.lastShot = False
+                    elif res[0] and res[1] == sec_bonus_target:
+                        rand_target_sound.play()
+                        player1.lose_timer()
+                        sec_bonus_target.set_position()
                         player2.lastShot = False
                     else:
                         player2.lastShot = False
@@ -191,6 +204,7 @@ while running:
         show_object(target2)
         show_object(target3)
         show_object(bonus_target)
+        show_object(sec_bonus_target)
         for i in player1.shots[1:]:
             show_shots(player1, (i[0],i[1]))
         for i in player2.shots[1:]:
