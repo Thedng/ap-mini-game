@@ -3,6 +3,65 @@ import random
 import pygame
 from pygame import mixer
 import gameObjects
+import sqlite3
+
+# Connect to SQLite database
+def connect_db():
+    return sqlite3.connect("leaderboard.db")
+
+# Initialize the table
+def init_db():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Create the leaderboard table if it doesn't exist
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS leaderboard (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            score INTEGER NOT NULL DEFAULT 0
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# Add a user with their score
+def add_user(username, score):
+    conn = connect_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO leaderboard (username, score) VALUES (?, ?)", (username, score))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        print(f"User '{username}' already exists.")
+    finally:
+        conn.close()
+
+# Update a user's score
+def update_score(username, score):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE leaderboard SET score = ? WHERE username = ?", (score, username))
+    conn.commit()
+    print(f"User '{username}' score updated to {score}.")
+    conn.close()
+
+# Display the leaderboard
+def display_leaderboard():
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    # Fetch all users sorted by score in descending order
+    cursor.execute("SELECT username, score FROM leaderboard ORDER BY score DESC")
+    rows = cursor.fetchall()
+
+    print("\nLeaderboard:")
+    print("-------------")
+    for rank, (username, score) in enumerate(rows, start=1):
+        print(f"{rank}. {username}: {score} points")
+    print("-------------\n")
+
+    conn.close()
 
 #creating target objects
 target1 = gameObjects.target(round(random.randrange(50, 750), -1), round(random.randrange(50, 550), -1), 'icon/target.png')
@@ -14,6 +73,8 @@ sec_bonus_target = gameObjects.target(round(random.randrange(50, 750), -1), roun
 while True:
     pn1 = input('enter name of first player: ')
     pn2 = input('enter name of second player: ')
+    add_user(pn1,0)
+    add_user(pn2,0)
     if pn1 != pn2:
         break
     else:
@@ -214,3 +275,7 @@ while running:
         pygame.display.update()
         if (not player1.have_timer() and not player2.have_timer()) or (not player1.have_bullets() and not player2.have_bullets()):
             finish_sound.play()
+update_score(pn1,player1._score)
+update_score(pn2,player2._score)
+display_leaderboard()
+
